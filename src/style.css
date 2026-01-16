@@ -1,0 +1,129 @@
+body {
+    background-color: #111;
+    color: #eee;
+    font-family: system-ui, sans-serif;
+    margin: 0;
+    padding: 20px;
+}
+
+#main-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 30px;
+}
+
+form input {
+    width: 30rem;
+    height: 40px;
+    padding: 0 15px;
+    border-radius: 12px;
+    background-color: #1e1e1e;
+    color: #eee;
+    border: 1px solid #333;
+    outline: none;
+    font-size: 1rem;
+}
+
+form button {
+    height: 40px;
+    width: 45px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #1e1e1e;
+    border: 1px solid #333;
+    border-radius: 12px;
+    color: #eee;
+    cursor: pointer;
+}
+
+form button i {
+    font-size: 1.1rem;
+}
+
+#container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.top-section {
+    display: flex;
+    gap: 20px;
+    align-items: stretch;
+}
+
+.card {
+    background-color: #1e1e1e;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+}
+
+.current-info {
+    flex: 1; 
+}
+
+.current-info h1 {
+    font-size: 3.5rem;
+    margin: 10px 0;
+}
+
+.other-details-container {
+    flex: 2; 
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 12px;
+}
+
+.other-details {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(255,255,255,0.02);
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.05);
+}
+
+.other-details h3 {
+    margin: 0;
+    font-size: 0.75rem;
+    color: #888;
+    text-transform: uppercase;
+}
+
+.other-details p {
+    margin: 10px 0 0;
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+
+.future-container {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.future-day {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 40px;
+}
+
+.weather-icon { width: 80px; height: 80px; }
+.weather-icon-small { width: 35px; height: 35px; }
+
+@media (max-width: 1000px) {
+    .top-section { flex-direction: column; }
+    .other-details-container { grid-template-columns: repeat(3, 1fr); }
+}
