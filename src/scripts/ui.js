@@ -1,6 +1,18 @@
 import weatherData from "./weather_data.js";
 
 const container = document.getElementById("container");
+const toggleBtn = document.getElementById("unitToggle");
+
+let storedData = null;
+let currentUnit = "C";
+
+function cToF(c) {
+    return ((c * 9) / 5 + 32).toFixed(1);
+}
+
+function convertTemp(temp) {
+    return currentUnit === "C" ? `${temp}°C` : `${cToF(temp)}°F`;
+}
 
 function displayCurrentConditions(data) {
     const div = document.createElement("div");
@@ -13,8 +25,8 @@ function displayCurrentConditions(data) {
     const condition = document.createElement("p");
 
     city.textContent = data.address;
-    currentTemp.textContent = `${data.currentConditions.temp}°C`;
-    maxminTemp.textContent = `Max / Min: ${data.days[0].tempmax}°C / ${data.days[0].tempmin}°C`;
+    currentTemp.textContent = convertTemp(data.currentConditions.temp);
+    maxminTemp.textContent = `Max / Min: ${convertTemp(data.days[0].tempmax)} / ${convertTemp(data.days[0].tempmin)}`;
     condition.textContent = data.currentConditions.conditions;
 
     icon.src = `https://raw.githubusercontent.com/visualcrossing/WeatherIcons/main/PNG/4th%20Set%20-%20Color/${data.currentConditions.icon}.png`;
@@ -31,7 +43,7 @@ function otherdata(data) {
 
     otherDiv.innerHTML = `
         <div class="other-details"><h3>UV</h3><p>${data.currentConditions.uvindex}</p></div>
-        <div class="other-details"><h3>Feels Like</h3><p>${data.currentConditions.feelslike}°C</p></div>
+        <div class="other-details"><h3>Feels Like</h3><p>${convertTemp(data.currentConditions.feelslike)}</p></div>
         <div class="other-details"><h3>Humidity</h3><p>${data.currentConditions.humidity}%</p></div>
         <div class="other-details"><h3>Wind</h3><p>${data.currentConditions.windspeed} km/h</p></div>
         <div class="other-details"><h3>Pressure</h3><p>${data.currentConditions.pressure} hPa</p></div>
@@ -44,8 +56,6 @@ function otherdata(data) {
 }
 
 function futureConditions(days) {
-    const mainContainer = document.getElementById("main-container");
-
     const div = document.createElement("div");
     div.classList.add("future-container", "card");
 
@@ -60,7 +70,7 @@ function futureConditions(days) {
 
         date.textContent = day.datetime;
         condition.textContent = day.conditions;
-        maxminTemp.textContent = `Max / Min: ${day.tempmax}°C / ${day.tempmin}°C`;
+        maxminTemp.textContent = `Max / Min: ${convertTemp(day.tempmax)} / ${convertTemp(day.tempmin)}`;
 
         icon.src = `https://raw.githubusercontent.com/visualcrossing/WeatherIcons/main/PNG/4th%20Set%20-%20Color/${day.icon}.png`;
         icon.classList.add("weather-icon-small");
@@ -69,26 +79,37 @@ function futureConditions(days) {
         div.appendChild(futuredata);
     });
 
-    mainContainer.appendChild(div);
+    container.appendChild(div);
 }
 
-export default async function display(city = "Chennai") {
+function renderWeather() {
     container.innerHTML = "";
-
-    const data = await weatherData(city);
-    if (!data) {
-        container.innerHTML = "<p style='color:red;'>Failed to fetch weather data</p>";
-        return;
-    }
 
     const topSection = document.createElement("div");
     topSection.classList.add("top-section");
 
-    const current = displayCurrentConditions(data);
-    const other = otherdata(data);
+    topSection.append(
+        displayCurrentConditions(storedData),
+        otherdata(storedData)
+    );
 
-    topSection.append(current, other);
     container.appendChild(topSection);
-
-    futureConditions(data.days);
+    futureConditions(storedData.days);
 }
+
+export default async function display(city = "Chennai") {
+    storedData = await weatherData(city);
+
+    if (!storedData) {
+        container.innerHTML = "<p style='color:red;'>Failed to fetch weather data</p>";
+        return;
+    }
+
+    renderWeather();
+}
+
+toggleBtn.addEventListener("click", () => {
+    currentUnit = currentUnit === "C" ? "F" : "C";
+    toggleBtn.textContent = currentUnit === "C" ? "°F" : "°C";
+    renderWeather();
+});

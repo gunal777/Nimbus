@@ -127,3 +127,26 @@ form button i {
     .top-section { flex-direction: column; }
     .other-details-container { grid-template-columns: repeat(3, 1fr); }
 }
+
+#unitToggle {
+    background: #363636;
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+button:hover {
+    background-color: hsl(0, 0%, 28%);
+    border-color: #666;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+button:hover {
+    opacity: 0.8;
+}
