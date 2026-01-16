@@ -1,4 +1,14 @@
 import weatherData from "./weather_data.js";
+import sunnyImg from "../assets/sunny.png";
+import clearNightImg from "../assets/default.png";
+import partlyCloudyDayImg from "../assets/partly-cloudy.png";
+import partlyCloudyNightImg from "../assets/default.png";
+import cloudyImg from "../assets/cloudy.png";
+import rainImg from "../assets/rain.png";
+import thunderImg from "../assets/thunder.png";
+import snowImg from "../assets/snow.png";
+import fogImg from "../assets/fog.png";
+import defaultImg from "../assets/default.png";
 
 const container = document.getElementById("container");
 const toggleBtn = document.getElementById("unitToggle");
@@ -6,12 +16,30 @@ const toggleBtn = document.getElementById("unitToggle");
 let storedData = null;
 let currentUnit = "C";
 
+const backgrounds = {
+    "clear-day": sunnyImg,
+    "clear-night": clearNightImg,
+    "partly-cloudy-day": partlyCloudyDayImg,
+    "partly-cloudy-night": partlyCloudyNightImg,
+    "cloudy": cloudyImg,
+    "rain": rainImg,
+    "thunderstorm": thunderImg,
+    "snow": snowImg,
+    "fog": fogImg,
+    "default": defaultImg
+};
+
 function cToF(c) {
     return ((c * 9) / 5 + 32).toFixed(1);
 }
 
 function convertTemp(temp) {
     return currentUnit === "C" ? `${temp}°C` : `${cToF(temp)}°F`;
+}
+
+function setBackground(iconKey) {
+    const url = backgrounds[iconKey] || "../assets/clear/default.png";
+    document.body.style.background = `linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('${url}') no-repeat center/cover`;
 }
 
 function displayCurrentConditions(data) {
@@ -95,6 +123,8 @@ function renderWeather() {
 
     container.appendChild(topSection);
     futureConditions(storedData.days);
+
+    setBackground(storedData.currentConditions.icon);
 }
 
 export default async function display(city = "Chennai") {
